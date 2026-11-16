@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, Routes, Route } from 'react-router'
 import './App.css'
 
@@ -13,12 +14,43 @@ function Inicio() {
 }
 
 function Categorias() {
+  const [categorias, setCategorias] = useState([])
+
+  useEffect(() => {
+    let ignorar = false
+
+    fetch('http://localhost:3000/categorias')
+      .then((respuesta) => {
+        if (!respuesta.ok) {
+          throw new Error(`Error HTTP ${respuesta.status}`)
+        }
+
+        return respuesta.json()
+      })
+      .then((datos) => {
+        if (!ignorar) {
+          setCategorias(datos)
+        }
+      })
+      .catch((error) => {
+        if (!ignorar) {
+          console.error('Error al consultar categorías:', error)
+        }
+      })
+
+    return () => {
+      ignorar = true
+    }
+  }, [])
+
   return (
     <section>
       <h2>Categorías de libros</h2>
-      <p>
-        Aquí se mostrarán las categorías obtenidas desde la API REST.
-      </p>
+      <ul>
+        {categorias.map((categoria) => (
+          <li key={categoria.id}>{categoria.nombre}</li>
+        ))}
+      </ul>
     </section>
   )
 }
