@@ -15,6 +15,9 @@ function Inicio() {
 
 function Categorias() {
   const [categorias, setCategorias] = useState([])
+  const [cargando, setCargando] = useState(true)
+  const [error, setError] = useState(false)
+  const [intento, setIntento] = useState(0)
 
   useEffect(() => {
     let ignorar = false
@@ -32,25 +35,61 @@ function Categorias() {
           setCategorias(datos)
         }
       })
-      .catch((error) => {
+      .catch((errorPeticion) => {
         if (!ignorar) {
-          console.error('Error al consultar categorías:', error)
+          console.error('Error al consultar categorías:', errorPeticion)
+          setError(true)
+        }
+      })
+      .finally(() => {
+        if (!ignorar) {
+          setCargando(false)
         }
       })
 
     return () => {
       ignorar = true
     }
-  }, [])
+  }, [intento])
+
+  function reintentar() {
+    setError(false)
+    setCargando(true)
+    setIntento((anterior) => anterior + 1)
+  }
 
   return (
     <section>
       <h2>Categorías de libros</h2>
-      <ul>
-        {categorias.map((categoria) => (
-          <li key={categoria.id}>{categoria.nombre}</li>
-        ))}
-      </ul>
+
+      {cargando ? (
+        <div className="estado-carga" role="status">
+          <span className="indicador-carga" aria-hidden="true"></span>
+          <span>Cargando categorías...</span>
+        </div>
+      ) : error ? (
+        <div role="alert">
+          <p className="mensaje-error">
+            No fue posible cargar las categorías.
+            Verifica que la API esté funcionando.
+          </p>
+          <button
+            type="button"
+            className="boton-reintentar"
+            onClick={reintentar}
+          >
+            Reintentar
+          </button>
+        </div>
+      ) : categorias.length === 0 ? (
+        <p>No hay categorías disponibles.</p>
+      ) : (
+        <ul>
+          {categorias.map((categoria) => (
+            <li key={categoria.id}>{categoria.nombre}</li>
+          ))}
+        </ul>
+      )}
     </section>
   )
 }
