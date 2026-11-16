@@ -1,0 +1,44 @@
+.encabezado {
+  background-color: #253449;
+  color: white;
+  padding: 24px;
+  text-align: center;
+}
+
+.encabezado h1 {
+  margin: 0 0 20px;
+}
+
+.encabezado nav {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.encabezado nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.encabezado nav a:hover {
+  text-decoration: underline;
+}
+
+.contenido {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.contenido h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .contenido {
+    margin: 20px 12px;
+  }
+}
