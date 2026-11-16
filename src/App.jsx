@@ -2,6 +2,41 @@ import { useEffect, useState } from 'react'
 import { Link, Routes, Route } from 'react-router'
 import './App.css'
 
+let categoriasCache = null
+let solicitudCategorias = null
+
+function obtenerCategorias() {
+  if (categoriasCache !== null) {
+    return Promise.resolve(categoriasCache)
+  }
+
+  if (solicitudCategorias !== null) {
+    return solicitudCategorias
+  }
+
+  solicitudCategorias = fetch('http://localhost:3000/categorias')
+    .then((respuesta) => {
+      if (!respuesta.ok) {
+        throw new Error(`Error HTTP ${respuesta.status}`)
+      }
+
+      return respuesta.json()
+    })
+    .then((datos) => {
+      if (!Array.isArray(datos)) {
+        throw new Error('Formato de categorías no válido')
+      }
+
+      categoriasCache = datos
+      return datos
+    })
+    .finally(() => {
+      solicitudCategorias = null
+    })
+
+  return solicitudCategorias
+}
+
 function Inicio() {
   return (
     <section>
@@ -22,14 +57,7 @@ function Categorias() {
   useEffect(() => {
     let ignorar = false
 
-    fetch('http://localhost:3000/categorias')
-      .then((respuesta) => {
-        if (!respuesta.ok) {
-          throw new Error(`Error HTTP ${respuesta.status}`)
-        }
-
-        return respuesta.json()
-      })
+    obtenerCategorias()
       .then((datos) => {
         if (!ignorar) {
           setCategorias(datos)
