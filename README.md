@@ -1,16 +1,52 @@
-# React + Vite
+# Librería Espacio Tiempo
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Aplicación académica desarrollada con React y JavaScript para explorar categorías de libros mediante una API REST mock.
 
-Currently, two official plugins are available:
+## Tecnologías
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- React Router
+- Vite
+- JSON Server
+- HTML y CSS
 
-## React Compiler
+## Instalación
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Desde la carpeta del proyecto:
 
-## Expanding the Oxlint configuration
+```powershell
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Ejecución
+
+Abrir dos terminales en la carpeta del proyecto.
+
+Terminal 1 - Backend REST mock:
+
+```powershell
+npm run api
+```
+
+API disponible en:
+
+http://localhost:3000/categorias
+
+Terminal 2 - Frontend React:
+
+```powershell
+npm run dev
+```
+
+Abrir en el navegador:
+
+http://localhost:5173/
+
+La página Categorías obtiene los datos desde la API REST mock.
+
+## Verificación
+
+```powershell
+npm run lint
+npm run build
+```
